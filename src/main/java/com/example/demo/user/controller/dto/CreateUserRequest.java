@@ -1,30 +1,34 @@
 package com.example.demo.user.controller.dto;
 
 import com.example.demo.user.model.User;
+import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Setter;
 
 import javax.validation.constraints.Email;
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 @Setter
+@Builder
+@EqualsAndHashCode
 public class CreateUserRequest {
 
-    // username should not be null or empty
+    // username should not be null or blank
     // username should have at least 2 characters
-    @NotEmpty
+    @NotBlank
     @Size(min = 2, message = "name should have at least 2 characters")
     private String name;
 
-    // email should not be null or empty
+    // email should not be null or blank
     // email should have a valid format
-    @NotEmpty
+    @NotBlank
     @Email
     private String email;
 
-    // password should not be null or empty
+    // password should not be null or blank
     // password should have at least 8 characters
-    @NotEmpty
+    @NotBlank
     @Size(min = 8, message = "password should have at least 8 characters")
     private String password;
 
