@@ -10,34 +10,34 @@ import javax.validation.Validator;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class CreateUserRequestTest {
+class CreateUserDTOTest {
 
     private final Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
 
     @Test
     @DisplayName("it should not fail when dto is correct")
     void test1() {
-        var createUserRequest = CreateUserRequest
+        var createUserDTO = CreateUserDTO
                 .builder()
                 .name("name")
                 .email("email@interia.pl")
                 .password("12345678")
                 .build();
 
-        var violations = validator.validate(createUserRequest);
+        var violations = validator.validate(createUserDTO);
         assertThat(violations).isEmpty();
     }
 
     @Test
     @DisplayName("it should fail when name is missing")
     void test2() {
-        var createUserRequest = CreateUserRequest
+        var createUserDTO = CreateUserDTO
                 .builder()
                 .email("email@interia.pl")
                 .password("12345678")
                 .build();
 
-        var violations = validator.validate(createUserRequest);
+        var violations = validator.validate(createUserDTO);
         assertThat(violations).isNotEmpty();
     }
 
@@ -45,27 +45,27 @@ class CreateUserRequestTest {
     @ValueSource(strings = {"", " ", "      ", "a"})
     @DisplayName("it should fail when name is not correct")
     void test3(String name) {
-        var createUserRequest = CreateUserRequest
+        var createUserDTO = CreateUserDTO
                 .builder()
                 .name(name)
                 .email("email@interia.pl")
                 .password("12345678")
                 .build();
 
-        var violations = validator.validate(createUserRequest);
+        var violations = validator.validate(createUserDTO);
         assertThat(violations).isNotEmpty();
     }
 
     @Test
     @DisplayName("it should fail when email is missing")
     void test4() {
-        var createUserRequest = CreateUserRequest
+        var createUserDTO = CreateUserDTO
                 .builder()
                 .name("name")
                 .password("12345678")
                 .build();
 
-        var violations = validator.validate(createUserRequest);
+        var violations = validator.validate(createUserDTO);
         assertThat(violations).isNotEmpty();
     }
 
@@ -73,27 +73,27 @@ class CreateUserRequestTest {
     @ValueSource(strings = {"", " ", "      ", "a", "email.pl"})
     @DisplayName("it should fail when email is not correct")
     void test5(String email) {
-        CreateUserRequest createUserRequest = CreateUserRequest
+        var createUserDTO = CreateUserDTO
                 .builder()
                 .name("name")
                 .email(email)
                 .password("12345678")
                 .build();
 
-        var violations = validator.validate(createUserRequest);
+        var violations = validator.validate(createUserDTO);
         assertThat(violations).isNotEmpty();
     }
 
     @Test
     @DisplayName("it should fail when password is missing")
     void test6() {
-        CreateUserRequest createUserRequest = CreateUserRequest
+        var createUserDTO = CreateUserDTO
                 .builder()
                 .name("name")
                 .email("email@interia.pl")
                 .build();
 
-        var violations = validator.validate(createUserRequest);
+        var violations = validator.validate(createUserDTO);
         assertThat(violations).isNotEmpty();
     }
 
@@ -101,7 +101,7 @@ class CreateUserRequestTest {
     @ValueSource(strings = {"", " ", "                    ", "a", "1234567"})
     @DisplayName("it should fail when email is not correct")
     void test7(String password) {
-        var createUserRequest = CreateUserRequest
+        var createUserRequest = CreateUserDTO
                 .builder()
                 .name("name")
                 .email("email@interia.pl")

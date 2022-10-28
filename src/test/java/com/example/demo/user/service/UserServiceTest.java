@@ -1,7 +1,7 @@
 package com.example.demo.user.service;
 
-import com.example.demo.user.controller.dto.CreateUserRequest;
-import com.example.demo.user.controller.dto.UserResponse;
+import com.example.demo.user.controller.dto.CreateUserDTO;
+import com.example.demo.user.controller.dto.UserResponseDTO;
 import com.example.demo.user.model.User;
 import com.example.demo.user.repository.UserRepository;
 import org.junit.jupiter.api.DisplayName;
@@ -26,7 +26,7 @@ class UserServiceTest {
     @Test
     @DisplayName("it should add new user")
     void test1() {
-        var createUserRequest = CreateUserRequest
+        var createUserDTO = CreateUserDTO
                 .builder()
                 .name("name")
                 .email("email@interia.pl")
@@ -41,12 +41,12 @@ class UserServiceTest {
                 .password("12345678")
                 .build();
 
-        when(userRepository.save(createUserRequest.toUser()))
+        when(userRepository.save(createUserDTO.toUser()))
                 .thenReturn(user);
 
-        assertThat(userService.createUser(createUserRequest))
+        assertThat(userService.createUser(createUserDTO))
                 .usingRecursiveComparison()
-                .isEqualTo(UserResponse.of(user));
+                .isEqualTo(UserResponseDTO.of(user));
     }
 
 }

@@ -1,33 +1,26 @@
 package com.example.demo.utils;
 
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
-import org.springframework.web.context.request.WebRequest;
-import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 import java.util.HashMap;
 
 @ControllerAdvice
-public class ExceptionsHandler extends ResponseEntityExceptionHandler {
+public class ExceptionsHandler {
 
-    @Override
-    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
-                                                                  HttpHeaders headers,
-                                                                  HttpStatus status,
-                                                                  WebRequest request) {
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    @ResponseBody
+    protected HashMap<String, String> handleMethodArgumentNotValid(MethodArgumentNotValidException ex) {
         var errors = new HashMap<String, String>();
         ex.getBindingResult()
-                .getAllErrors()
-                .forEach(error -> {
-                    String fieldName = ((FieldError) error).getField();
-                    String message = error.getDefaultMessage();
-                    errors.put(fieldName, message);
-                });
-        return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
+                .getFieldErrors()
+                .forEach(error -> errors.put(error.getField(), error.getDefaultMessage()));
+        return errors;
     }
 
 }

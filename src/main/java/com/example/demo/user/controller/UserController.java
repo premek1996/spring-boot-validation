@@ -1,7 +1,7 @@
 package com.example.demo.user.controller;
 
-import com.example.demo.user.controller.dto.CreateUserRequest;
-import com.example.demo.user.controller.dto.UserResponse;
+import com.example.demo.user.controller.dto.CreateUserDTO;
+import com.example.demo.user.controller.dto.UserResponseDTO;
 import com.example.demo.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -21,8 +21,8 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping
-    ResponseEntity<UserResponse> createUser(@Valid @RequestBody CreateUserRequest createUserRequest) {
-        var user = userService.createUser(createUserRequest);
+    ResponseEntity<UserResponseDTO> createUser(@Valid @RequestBody CreateUserDTO createUserDTO) {
+        var user = userService.createUser(createUserDTO);
         return new ResponseEntity<>(user, HttpStatus.CREATED);
     }
 

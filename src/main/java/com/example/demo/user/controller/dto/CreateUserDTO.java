@@ -3,6 +3,7 @@ package com.example.demo.user.controller.dto;
 import com.example.demo.user.model.User;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.Setter;
 
 import javax.validation.constraints.Email;
@@ -10,9 +11,10 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 @Setter
+@Getter
 @Builder
 @EqualsAndHashCode
-public class CreateUserRequest {
+public class CreateUserDTO {
 
     // username should not be null or blank
     // username should have at least 2 characters

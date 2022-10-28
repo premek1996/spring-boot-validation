@@ -1,8 +1,9 @@
 package com.example.demo.user.controller;
 
-import com.example.demo.user.controller.dto.CreateUserRequest;
-import com.example.demo.user.controller.dto.UserResponse;
+import com.example.demo.user.controller.dto.CreateUserDTO;
+import com.example.demo.user.controller.dto.UserResponseDTO;
 import com.example.demo.user.service.UserService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -26,20 +27,22 @@ class UserControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
+    @Autowired
+    private ObjectMapper objectMapper;
 
     @Test
     @DisplayName("it should add new user")
     @SneakyThrows
     void test1() {
 
-        var createUserRequest = CreateUserRequest
+        var createUserDTO = CreateUserDTO
                 .builder()
                 .name("name")
                 .email("email@interia.pl")
                 .password("12345678")
                 .build();
 
-        var userResponse = UserResponse
+        var userResponseDTO = UserResponseDTO
                 .builder()
                 .id(1L)
                 .name("name")
@@ -47,18 +50,12 @@ class UserControllerTest {
                 .password("12345678")
                 .build();
 
-        when(userService.createUser(createUserRequest))
-                .thenReturn(userResponse);
+        when(userService.createUser(createUserDTO))
+                .thenReturn(userResponseDTO);
 
         mockMvc.perform(post("/api/v1/users")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("""
-                                {
-                                     "name":"name",
-                                     "email":"email@interia.pl",
-                                     "password":"12345678"
-                                }
-                                """)
+                        .content(objectMapper.writeValueAsString(createUserDTO))
                 ).andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id").value("1"))
                 .andExpect(jsonPath("$.name").value("name"))
